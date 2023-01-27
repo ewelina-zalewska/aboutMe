@@ -1,8 +1,8 @@
 ﻿<template>
-  <hamburger-menu-items />
+  <hamburger-menu-items :menu_visibility="menu_visibility" />
 
   <action-button
-    @click="menuStore.CHANGE_VISIBILITY()"
+    @click="change_visibility"
     type="menuButton"
     :class="rotateIcon"
   >
@@ -13,18 +13,25 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { ref, computed, watch } from "vue";
 import ActionButton from "@/components/Shared/ActionButton.vue";
 import HamburgerMenuItems from "@/components/Navigation/HamburgerMenuItems.vue";
 
-import { useMenuStore } from "@/stores/menu";
-const menuStore = useMenuStore();
+import { useRoute } from "vue-router";
+const route = useRoute();
+
+const menu_visibility = ref(false);
+
+const change_visibility = () =>
+  (menu_visibility.value = !menu_visibility.value);
+
+watch(route, () => (menu_visibility.value = false));
 
 const caretIcon = computed(() =>
-  menuStore.MENU_VISIBILITY ? ["fas", "fa-xmark"] : ["fas", "fa-bars"]
+  menu_visibility.value ? ["fas", "fa-xmark"] : ["fas", "fa-bars"]
 );
 
 const rotateIcon = computed(() =>
-  menuStore.MENU_VISIBILITY ? "rotate-180" : "rotate-0"
+  menu_visibility.value ? "rotate-180" : "rotate-0"
 );
 </script>

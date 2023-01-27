@@ -1,8 +1,9 @@
 ﻿<template>
   <li
+    class="menu"
+    :class="menuClass"
     v-for="menuItem in menuItems"
     :key="menuItem.text"
-    class="flex justify-center py-[10%]"
   >
     <router-link :to="menuItem.url"
       >{{ menuItem.text.toUpperCase() }}
@@ -11,8 +12,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed, toRefs } from "vue";
 import type { MenuItem } from "@/components/Navigation/types";
+
+const props = defineProps({
+  type: {
+    type: String,
+    required: true,
+    default: "desktopMenu",
+    validator(value: string) {
+      return ["desktopMenu", "mobileMenu"].includes(value);
+    },
+  },
+});
+
+const { type } = toRefs(props);
+const menuClass = computed(() => {
+  return { [type.value]: true };
+});
 
 const menuItems = ref<MenuItem[]>([
   { text: "Home", url: "/" },
@@ -21,3 +38,13 @@ const menuItems = ref<MenuItem[]>([
   { text: "Contact", url: "/contact" },
 ]);
 </script>
+
+<style scoped>
+menu {
+  @apply flex;
+}
+
+.mobileMenu {
+  @apply justify-center py-[10%];
+}
+</style>

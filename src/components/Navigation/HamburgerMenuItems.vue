@@ -1,20 +1,12 @@
 ﻿<template>
   <Transition name="showMenu">
     <div
-      v-if="menuStore.MENU_VISIBILITY"
+      v-if="menu_visibility"
       class="absolute right-0 bottom-0 h-screen w-full rounded-[40px] bg-brand-darkblue"
     >
       <nav class="flex h-full items-center justify-center">
         <ul class="text-4xl text-brand-creamy">
-          <li
-            v-for="menuItem in menuItems"
-            :key="menuItem.text"
-            class="flex justify-center py-[10%]"
-          >
-            <router-link :to="menuItem.url" @click="menuStore.CHANGE_VISIBILITY"
-              >{{ menuItem.text.toUpperCase() }}
-            </router-link>
-          </li>
+          <menu-item type="mobileMenu" />
         </ul>
       </nav>
     </div>
@@ -22,17 +14,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import type { MenuItem } from "@/components/Navigation/types";
-import { useMenuStore } from "@/stores/menu";
-const menuStore = useMenuStore();
-
-const menuItems = ref<MenuItem[]>([
-  { text: "Home", url: "/" },
-  { text: "About Me", url: "/aboutme" },
-  { text: "Projects", url: "/projects" },
-  { text: "Contact", url: "/contact" },
-]);
+import MenuItem from "@/components/Shared/MenuItem.vue";
+defineProps({
+  menu_visibility: {
+    type: Boolean,
+    required: true,
+  },
+});
 </script>
 
 <style scoped>
