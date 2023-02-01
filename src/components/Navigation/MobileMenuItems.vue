@@ -1,37 +1,37 @@
 ﻿<template>
-  <Transition :name="menu_animated">
-    <div v-if="menu_isOpen" :class="[menuVisible]">
-      <nav class="flex h-full items-center justify-center">
-        <menu-item itemClass="mobileMenu" />
+  <Transition :name="screenBreakpoint ? 'showTabletMenu' : 'showHandyMenu'">
+    <div
+      :class="[
+        mobileMenuVisible,
+        {
+          'h-screen-1/2': screenBreakpoint,
+          'text-3xl': screenBreakpoint,
+          'text-4xl': !screenBreakpoint,
+        },
+      ]"
+      v-if="menu_isOpen"
+    >
+      <nav class="flex h-full items-center justify-center bg-brand-darkblue">
+        <menu-item liClass="mobileMenu" />
       </nav>
     </div>
   </Transition>
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
-import tailwindConfig from "tailwindcss/defaultConfig";
-import { useMenuStore } from "@/stores/menu";
 import MenuItem from "@/components/Shared/MenuItem.vue";
+
+import breakpoints from "@/composables/breakpoints";
+import mobileMenuSize from "@/composables/mobileMenuSize";
+
+const { screenBreakpoint } = breakpoints();
+const { mobileMenuVisible } = mobileMenuSize();
 
 defineProps({
   menu_isOpen: {
     type: Boolean,
     required: true,
   },
-});
-const mdBreakpoint =
-  Number(tailwindConfig.theme.screens.md.replace("px", "")) || Number(768);
-const menuStore = useMenuStore();
-const screenBreakpoint = computed(() => menuStore.windowWidth > mdBreakpoint);
-
-const menuVisible = computed(() => {
-  return screenBreakpoint.value
-    ? "left-0 right-0 h-[30vh] w-full justify-center bg-brand-darkblue flex"
-    : "absolute right-0 bottom-0 h-full w-full rounded-[40px] bg-brand-darkblue";
-});
-const menu_animated = computed(() => {
-  return screenBreakpoint.value ? "showTabletMenu" : "showHandyMenu";
 });
 </script>
 
@@ -52,7 +52,7 @@ const menu_animated = computed(() => {
     height: 0;
   }
   100% {
-    height: 30vh;
+    height: 50vh;
   }
 }
 

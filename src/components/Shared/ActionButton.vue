@@ -9,12 +9,16 @@
 import { computed, toRefs } from "vue";
 
 const props = defineProps({
-  type: {
-    type: String,
+  btn_style: {
+    type: String || Array,
     required: true,
-    default: "menuButton",
+    default: "mobileMenuButton",
     validator(value: string) {
-      return ["loginButton", "menuButton"].includes(value);
+      return [
+        "laptop_modeChangerButton",
+        "mobileMenuButton",
+        "mobile_modeChangerButton",
+      ].includes(value);
     },
   },
   text: {
@@ -23,21 +27,21 @@ const props = defineProps({
   },
 });
 
-const { type } = toRefs(props);
+const { btn_style } = toRefs(props);
 const buttonClass = computed(() => {
-  return { [type.value]: true };
+  return { [btn_style.value]: true };
 });
 </script>
 
 <style scoped>
-button {
-  @apply absolute h-16 w-16 transform transition-transform duration-200 ease-in-out;
+.mobileMenuButton {
+  @apply absolute bottom-[2vh] right-[2vh] z-50 transform rounded-full bg-brand-darkblue text-brand-creamy shadow-creamy transition-transform duration-200 ease-in-out;
 }
 
-.logoButton {
-  @apply left-[2vh] top-[2vh] z-40 bg-transparent text-3xl text-brand-darkblue;
+.mobile_modeChangerButton {
+  @apply px-4 py-[2vh];
 }
-.menuButton {
-  @apply right-[2vh] bottom-[2vh] z-50 rounded-full bg-brand-darkblue text-3xl text-brand-creamy shadow-creamy;
+.laptop_modeChangerButton {
+  @apply ml-[5vw];
 }
 </style>
