@@ -1,22 +1,17 @@
 ﻿<template>
-  <header class="w-full lg:h-[112px]">
+  <header class="w-full" :style="{ height: `${headerSize}px` }">
     <div
+      id="laptopMenu"
       class="m-h-min fixed top-0 left-0 w-full py-6 lg:text-menu-md xl:text-menu-lg"
     >
       <div class="mx-auto flex h-full flex-nowrap items-center px-10">
-        <router-link
-          :to="{ name: 'Projects' }"
-          class="flex h-full flex-col lg:text-portfolio-md xl:text-portfolio-lg"
-        >
-          <span>PORTFOLIO</span>
-          <span class="text-center">2023</span>
-        </router-link>
+        <laptop-menu-logotyp />
 
         <nav class="ml-auto flex h-full flex-nowrap">
           <menu-item
-            ulClass="flex h-full list-none"
-            liClass="laptopMenu"
-            aClass="flex h-full items-center py-2.5"
+            list="laptopMenu-list"
+            listItem="laptopMenu-listItem"
+            anchor="laptopMenu-anchor"
           />
         </nav>
       </div>
@@ -25,7 +20,30 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, ref, computed } from "vue";
 import MenuItem from "@/components/Shared/MenuItem.vue";
-</script>
+import LaptopMenuLogotyp from "@/components/Navigation/LaptopMenuLogotyp.vue";
+import getComputedStyle from "@/composables/getComputedStyle";
 
-<style scoped></style>
+const getLineHeight = ref(0);
+const getPaddingSize = ref(0);
+const headerSize = computed(() => {
+  return getLineHeight.value + getPaddingSize.value * 2;
+});
+
+onMounted(() => {
+  const el: HTMLElement | null = document.querySelector("#laptopMenu");
+  if (el) {
+    const { lineHeightComputed, paddingComputed } = getComputedStyle(el);
+    getLineHeight.value = lineHeightComputed;
+    getPaddingSize.value = paddingComputed;
+
+    window.addEventListener("resize", () => {
+      const { lineHeightComputed, paddingComputed } = getComputedStyle(el);
+      getLineHeight.value = lineHeightComputed;
+      getPaddingSize.value = paddingComputed;
+      console.log(getLineHeight.value, getPaddingSize.value);
+    });
+  }
+});
+</script>
