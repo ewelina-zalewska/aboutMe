@@ -1,18 +1,18 @@
 ﻿<template>
+  <Transition name="showHandyMenu">
+    <mobile-menu-logotyp v-if="menu_isOpen" />
+  </Transition>
   <Transition :name="screenBreakpoint ? 'showTabletMenu' : 'showHandyMenu'">
     <div
-      :class="[
-        mobileMenuVisible,
-        {
-          'h-screen-1/2': screenBreakpoint,
-          'text-3xl': screenBreakpoint,
-          'text-4xl': !screenBreakpoint,
-        },
-      ]"
       v-if="menu_isOpen"
+      :class="[
+        'bg-brand-darkblue text-brand-creamy',
+        mobileMenuVisible,
+        { 'text-3xl': screenBreakpoint, 'text-4xl': !screenBreakpoint },
+      ]"
     >
-      <nav class="flex h-full items-center justify-center bg-brand-darkblue">
-        <menu-item liClass="mobileMenu" />
+      <nav class="flex items-center justify-center">
+        <menu-item list="mobileMenu-list" listItem="mobileMenu-listItem" />
       </nav>
     </div>
   </Transition>
@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import MenuItem from "@/components/Shared/MenuItem.vue";
-
+import MobileMenuLogotyp from "@/components/Navigation/MobileMenuLogotyp.vue";
 import breakpoints from "@/composables/breakpoints";
 import mobileMenuSize from "@/composables/mobileMenuSize";
 
@@ -49,10 +49,10 @@ defineProps({
 
 @keyframes showTabletMenu {
   0% {
-    height: 0;
+    max-height: 0;
   }
   100% {
-    height: 50vh;
+    max-height: 100vh;
   }
 }
 
@@ -63,9 +63,9 @@ defineProps({
   animation: showHandyMenu 0.6s reverse ease-in-out;
 }
 .showTabletMenu-enter-active {
-  animation: showTabletMenu 0.6s ease-in-out;
+  animation: showTabletMenu 1s linear;
 }
 .showTabletMenu-leave-active {
-  animation: showTabletMenu 0.6s reverse ease-in-out;
+  animation: showTabletMenu 1s reverse linear;
 }
 </style>
