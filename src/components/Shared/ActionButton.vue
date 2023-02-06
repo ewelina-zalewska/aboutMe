@@ -47,7 +47,7 @@ const buttonClass = computed(() => {
 
 <style scoped>
 .mobileMenuButton {
-  @apply absolute bottom-[2vh] right-[2vh] z-[100] h-14 w-14 transform rounded-full bg-brand-darkblue text-brand-creamy shadow-creamy transition-transform duration-200 ease-in-out;
+  @apply absolute bottom-[2vh] right-[2vh] z-[100] h-14 w-14 rounded-full bg-brand-darkblue text-brand-creamy shadow-creamy transition-all;
 }
 
 .mobile_modeChangerButton {
