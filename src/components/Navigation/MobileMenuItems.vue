@@ -2,13 +2,19 @@
   <Transition name="showHandyMenu">
     <mobile-menu-logotyp v-if="menu_isOpen" />
   </Transition>
-  <Transition :name="screenBreakpoint ? 'showTabletMenu' : 'showHandyMenu'">
+  <Transition
+    :name="mobileScreenBreakpoint ? 'showTabletMenu' : 'showHandyMenu'"
+  >
     <div
       v-if="menu_isOpen"
       :class="[
         'bg-brand-darkblue text-brand-creamy',
         mobileMenuVisible,
-        { 'text-3xl': screenBreakpoint, 'text-4xl': !screenBreakpoint },
+        {
+          'text-4xl': !mobileScreenBreakpoint && !smallScreenBreakpoint,
+          'text-3xl': mobileScreenBreakpoint && !smallScreenBreakpoint,
+          'text-xl': smallScreenBreakpoint,
+        },
       ]"
     >
       <nav class="flex items-center justify-center">
@@ -24,7 +30,7 @@ import MobileMenuLogotyp from "@/components/Navigation/MobileMenuLogotyp.vue";
 import breakpoints from "@/composables/breakpoints";
 import mobileMenuSize from "@/composables/mobileMenuSize";
 
-const { screenBreakpoint } = breakpoints();
+const { mobileScreenBreakpoint, smallScreenBreakpoint } = breakpoints();
 const { mobileMenuVisible } = mobileMenuSize();
 
 defineProps({

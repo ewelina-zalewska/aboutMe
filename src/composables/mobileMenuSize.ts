@@ -4,14 +4,14 @@ import breakpoints from "@/composables/breakpoints";
 
 const mobileMenuSize = () => {
   const { windowWidth } = windowSize();
-  const { lgBreakpoint, screenBreakpoint } = breakpoints();
+  const { lgBreakpoint, mobileScreenBreakpoint } = breakpoints();
 
   const menuVisible = computed(() => windowWidth.value >= lgBreakpoint);
 
   const mobileMenuVisible = computed(() => {
-    return screenBreakpoint.value
-      ? "left-0 top-0 w-full justify-center flex overflow-hidden"
-      : "absolute right-0 bottom-0 h-full w-full rounded-[40px]";
+    return mobileScreenBreakpoint.value
+      ? "left-0 top-0 w-full justify-center flex overflow-hidden h-auto"
+      : "absolute flex justify-center right-0 bottom-0 h-full w-full rounded-[40px]";
   });
 
   const modeChangerStyle = computed(() => {
@@ -20,7 +20,9 @@ const mobileMenuSize = () => {
       : "mobile_modeChangerButton";
   });
   const buttonSize = computed(() => {
-    return screenBreakpoint.value ? "w-16 h-16 text-4xl" : "w-10 h-10 text-2xl";
+    return mobileScreenBreakpoint.value
+      ? "w-14 h-14 text-4xl "
+      : "w-10 h-10 text-2xl";
   });
   return {
     menuVisible,
