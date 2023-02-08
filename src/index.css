@@ -1,3 +1,21 @@
 ﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  cursor: none !important;
+}
+:root.light-theme {
+  --background-color-primary: #ffe4b5;
+  --text-primary-color: #001b4a;
+  --background-color-menu: #001b4a;
+  --text-color-menu: #ffe4b5;
+  --bg-color-logo: #fdfaf4;
+}
+:root.dark-theme {
+  --background-color-primary: #02050b;
+  --text-primary-color: #fdfaf4;
+  --background-color-menu: #fdfaf4;
+  --text-color-menu: #02050b;
+  --bg-color-logo: #fdfaf4;
+}

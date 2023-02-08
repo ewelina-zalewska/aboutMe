@@ -3,7 +3,7 @@
     type="button"
     @mouseover="MOUSEOVER"
     @mouseleave="MOUSELEAVE"
-    :class="[buttonClass, animate, resizedBtn]"
+    :class="[buttonClass, animatedBtn, resizedBtn]"
   >
     <slot></slot>
   </button>
@@ -18,7 +18,7 @@ const MOUSEOVER = () => pointerStore.MOUSEOVER();
 const MOUSELEAVE = () => pointerStore.MOUSELEAVE();
 
 const props = defineProps({
-  animate: {
+  animatedBtn: {
     type: String as PropType<string>,
     required: false,
   },
@@ -47,13 +47,13 @@ const buttonClass = computed(() => {
 
 <style scoped>
 .mobileMenuButton {
-  @apply absolute bottom-[2vh] right-[2vh] z-[100] h-14 w-14 rounded-full bg-brand-darkblue text-brand-creamy shadow-creamy transition-all;
+  @apply absolute bottom-[2vh] right-[2vh] z-[100] h-14 w-14 rounded-full border border-theme-text-color-menu bg-theme-bg-color-menu text-theme-text-color-menu transition-transform;
 }
 
 .mobile_modeChangerButton {
-  @apply px-4 py-[2vh];
+  @apply basis-1/2 p-[2vh];
 }
 .laptop_modeChangerButton {
-  @apply ml-[5vw];
+  @apply ml-[5vw] min-w-[25px];
 }
 </style>

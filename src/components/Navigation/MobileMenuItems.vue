@@ -8,7 +8,7 @@
     <div
       v-if="menu_isOpen"
       :class="[
-        'bg-brand-darkblue text-brand-creamy',
+        'bg-theme-bg-color-menu text-theme-text-color-menu',
         mobileMenuVisible,
         {
           'text-4xl': !mobileScreenBreakpoint && !smallScreenBreakpoint,
