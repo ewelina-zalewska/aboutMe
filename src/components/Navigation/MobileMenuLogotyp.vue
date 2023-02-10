@@ -1,7 +1,5 @@
 ﻿<template>
-  <action-button
-    btnClass="absolute left-[3vw] top-[3vw] z-[99] h-[10vw] max-h-[48px] w-[10vw] max-w-[48px] overflow-hidden rounded-[50%]  mix-blend-difference"
-  >
+  <action-button btnClass="mobileMenuLogotyp" @click="goToTheSection()">
     <template v-slot>
       <div class="relative h-full w-full">
         <div class="commonClass left-0 top-0 h-full w-[18%]"></div>
@@ -26,9 +24,23 @@
 
 <script lang="ts" setup>
 import ActionButton from "@/components/Shared/ActionButton.vue";
+import { useRouter } from "vue-router";
+import { useSelectedUrlStore } from "@/stores/selectedUrl";
+
+const router = useRouter();
+const selectedUrlStore = useSelectedUrlStore();
+
+const goToTheSection = () => {
+  const pathName = "/aboutme";
+  router.push({ path: pathName });
+  selectedUrlStore.SET_URL(pathName);
+};
 </script>
 
 <style scoped>
+.mobileMenuLogotyp {
+  @apply absolute left-[3vw] top-[3vw] z-[99] h-[10vw] max-h-[48px] w-[10vw] max-w-[48px] overflow-hidden rounded-[50%]  mix-blend-difference;
+}
 .commonClass {
   @apply absolute bg-theme-bg-color-logo;
 }

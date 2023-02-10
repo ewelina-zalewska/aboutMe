@@ -1,21 +1,39 @@
 ﻿<template>
-  <ul :class="ulClass">
-    <li :class="listClass" v-for="menuItem in menuItems" :key="menuItem.text">
-      <router-link :to="menuItem.url" :class="aClass"
-        >{{ menuItem.text.toUpperCase() }}
-      </router-link>
+  <ul :class="['list-none', listClass]">
+    <li
+      :class="listItemClass"
+      v-for="menuItem in menuItems"
+      :key="menuItem.text"
+    >
+      <router-link-and-mouse-over-effect
+        :pathName="menuItem.url"
+        :class="[
+          selectedUrlStore.selectedUrl === menuItem.url
+            ? 'selectedMenuItem'
+            : null,
+          anchor,
+        ]"
+        @click="selectedUrlStore.SET_URL(menuItem.url)"
+      >
+        {{ menuItem.text.toUpperCase() }}
+      </router-link-and-mouse-over-effect>
     </li>
-    <action-button text="DE" :btn_style="modeChangerStyle" />
-    <action-button text="SUN" :btn_style="modeChangerStyle" />
+    <div class="flex">
+      <dark-mode-changer />
+      <language-changer />
+    </div>
   </ul>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toRefs } from "vue";
-import ActionButton from "@/components/Shared/ActionButton.vue";
+import { ref, computed, toRefs, type PropType } from "vue";
 import type { MenuItem } from "@/components/Navigation/types";
-import mobileMenuSize from "@/composables/mobileMenuSize";
-const { modeChangerStyle } = mobileMenuSize();
+import RouterLinkAndMouseOverEffect from "@/components/Shared/RouterLinkAndMouseOverEffect.vue";
+import DarkModeChanger from "@/components/ModeChanger/DarkModeChanger.vue";
+import LanguageChanger from "@/components/ModeChanger/LanguageChanger.vue";
+import { useSelectedUrlStore } from "@/stores/selectedUrl";
+
+const selectedUrlStore = useSelectedUrlStore();
 
 const menuItems = ref<MenuItem[]>([
   { text: "Home", url: "/" },
@@ -25,36 +43,65 @@ const menuItems = ref<MenuItem[]>([
 ]);
 
 const props = defineProps({
-  ulClass: {
-    type: String,
-    required: false,
-  },
-  liClass: {
-    type: String,
-    required: false,
-    default: "laptopMenu",
+  list: {
+    type: String as PropType<string>,
+    required: true,
     validator(value: string) {
-      return ["laptopMenu", "mobileMenu"].includes(value);
+      return ["laptopMenu-list", "mobileMenu-list"].includes(value);
     },
   },
-  aClass: {
-    type: String,
+  listItem: {
+    type: String as PropType<string>,
+    required: true,
+    validator(value: string) {
+      return ["laptopMenu-listItem", "mobileMenu-listItem"].includes(value);
+    },
+  },
+  anchor: {
+    type: String as PropType<string>,
     required: false,
   },
 });
 
-const { liClass } = toRefs(props);
+const { list } = toRefs(props);
 const listClass = computed(() => {
-  return { [liClass.value]: true };
+  return { [list.value]: true };
+});
+
+const { listItem } = toRefs(props);
+const listItemClass = computed(() => {
+  return { [listItem.value]: true };
 });
 </script>
 
 <style scoped>
-.mobileMenu {
-  @apply flex justify-center py-[2vh];
+.selectedMenuItem {
+  @apply relative;
 }
 
-.laptopMenu {
+:before,
+:after {
+  @apply absolute top-[50%] -right-[0.7em] h-[0.4em] w-[0.4em] -translate-y-[50%] rounded-full
+  bg-brand-darkblue bg-theme-text-color-menu content-[""] lg:bg-theme-text-color;
+}
+:after {
+  @apply -left-[0.7em];
+}
+
+.mobileMenu-list {
+  @apply my-[5vh];
+}
+.laptopMenu-list {
+  @apply flex h-full;
+}
+.mobileMenu-listItem {
+  @apply flex justify-center py-[3%];
+}
+
+.laptopMenu-listItem {
   @apply ml-[5vw] h-full first:ml-0;
+}
+.laptopMenu-anchor {
+  @apply flex h-full items-center py-2.5;
 }
 </style>
