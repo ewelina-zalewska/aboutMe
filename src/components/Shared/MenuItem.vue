@@ -3,7 +3,7 @@
     <li
       :class="listItemClass"
       v-for="menuItem in menuItems"
-      :key="menuItem.text"
+      :key="menuItem.text_en"
     >
       <router-link-and-mouse-over-effect
         :pathName="menuItem.url"
@@ -15,7 +15,7 @@
         ]"
         @click="selectedUrlStore.SET_URL(menuItem.url)"
       >
-        {{ menuItem.text.toUpperCase() }}
+        {{ IS_ENGLISH() ? menuItem.text_en : menuItem.text_de }}
       </router-link-and-mouse-over-effect>
     </li>
     <div class="flex">
@@ -32,14 +32,15 @@ import RouterLinkAndMouseOverEffect from "@/components/Shared/RouterLinkAndMouse
 import DarkModeChanger from "@/components/ModeChanger/DarkModeChanger.vue";
 import LanguageChanger from "@/components/ModeChanger/LanguageChanger.vue";
 import { useSelectedUrlStore } from "@/stores/selectedUrl";
-
+import { useLanguageStore } from "@/stores/language";
+const { IS_ENGLISH } = useLanguageStore();
 const selectedUrlStore = useSelectedUrlStore();
 
 const menuItems = ref<MenuItem[]>([
-  { text: "Home", url: "/" },
-  { text: "About Me", url: "/aboutme" },
-  { text: "Projects", url: "/projects" },
-  { text: "Contact", url: "/contact" },
+  { text_en: "Home", text_de: "Heim", url: "/" },
+  { text_en: "About Me", text_de: "Uber Mich", url: "/aboutme" },
+  { text_en: "Projects", text_de: "Projekte", url: "/projects" },
+  { text_en: "Contact", text_de: "Kontakt", url: "/contact" },
 ]);
 
 const props = defineProps({
@@ -79,12 +80,12 @@ const listItemClass = computed(() => {
   @apply relative;
 }
 
-:before,
-:after {
+.selectedMenuItem:before,
+.selectedMenuItem:after {
   @apply absolute top-[50%] -right-[0.7em] h-[0.4em] w-[0.4em] -translate-y-[50%] rounded-full
   bg-brand-darkblue bg-theme-text-color-menu content-[""] lg:bg-theme-text-color;
 }
-:after {
+.selectedMenuItem:after {
   @apply -left-[0.7em];
 }
 

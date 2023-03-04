@@ -1,6 +1,6 @@
 ﻿<template>
   <h1>
-    {{ IS_ENGLISH() ? en.welcomeMsg : de.welcomeMsg }}
+    {{ IS_ENGLISH() ? en.contactMsg : de.contactMsg }}
   </h1>
 </template>
 
